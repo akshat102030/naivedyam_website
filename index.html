@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naivedyam — Preview Index</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #FBF7F1;
+      --cream-50: #FDFAF5;
+      --cream-200: #F6EEE2;
+      --ink: #2A2438;
+      --ink-700: #56486A;
+      --ink-500: #857399;
+      --peach-100: #FDF1E8;
+      --peach-300: #F4C2A1;
+      --coral: #E8927C;
+      --coral-700: #B85A47;
+      --lavender-500: #B19BC9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--peach-100) 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 80px 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      opacity: 0.35; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .container { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
+
+    h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .accent {
+      font-style: italic;
+      background: linear-gradient(110deg, #C97A4F 0%, var(--coral) 40%, var(--lavender-500) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lede {
+      margin-top: 16px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-700);
+      max-width: 580px;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--coral-700);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+    .card {
+      display: block;
+      padding: 24px 28px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--ink);
+      background: linear-gradient(135deg, rgba(253, 250, 245, 0.75), rgba(253, 241, 232, 0.55));
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 20px 40px -16px rgba(232, 146, 124, 0.12);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 24px 48px -16px rgba(232, 146, 124, 0.25);
+    }
+    .card-num {
+      display: inline-block;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: var(--coral-700);
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+    .card-desc {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--ink-700);
+      line-height: 1.5;
+    }
+    .card-meta {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--coral-700);
+      font-weight: 500;
+    }
+
+    .footer {
+      margin-top: 72px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(133, 115, 153, 0.15);
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink-700);
+    }
+    .footer code {
+      background: var(--cream-200);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="eyebrow">Section previews</span>
+    <h1>Naivedyam — <span class="accent">design previews</span></h1>
+    <p class="lede">
+      Each link below is a standalone HTML file that runs in your browser with no install needed.
+      They show what each section of the Next.js project will look like once running.
+    </p>
+
+    <div class="grid">
+      <a class="card" href="preview-hero.html">
+        <span class="card-num">01 · the welcome</span>
+        <div class="card-title">Hero + Navbar</div>
+        <p class="card-desc">The first three seconds. Floating elements, warm aurora atmosphere, dual CTAs.</p>
+        <span class="card-meta">Open →</span>
+      </a>
+
+      <a class="card" href="preview-founder.html">
+        <span class="card-num">02 · the trust</span>
+        <div class="card-title">Founder section</div>
+        <p class="card-desc">Maya Dubey's story. Arched portrait, floating credentials, animated stats.</p>
+        <span class="card-meta">Open →</span>
+      </a>
+
+      <a class="card" href="preview-services.html">
+        <span class="card-num">03 · how we help</span>
+        <div class="card-title">Services bento</div>
+        <p class="card-desc">Six therapies in a 3D-tilt bento grid. Hand-drawn illustrations, color souls.</p>
+        <span class="card-meta">Open →</span>
+      </a>
+
+      <a class="card" href="preview-conditions.html">
+        <span class="card-num">04 · who we help</span>
+        <div class="card-title">Conditions Supported</div>
+        <p class="card-desc">Strengths-first cards. Click any to open a respectful, detailed modal.</p>
+        <span class="card-meta">Open →</span>
+      </a>
+
+      <a class="card" href="preview-progress.html">
+        <span class="card-num">05 · the honest part</span>
+        <div class="card-title">Progress Journey</div>
+        <p class="card-desc">Non-linear truth, milestone timeline that draws itself, six growth dimensions.</p>
+        <span class="card-meta">Open →</span>
+      </a>
+
+      <a class="card" href="preview-testimonials.html">
+        <span class="card-num">06 · the families</span>
+        <div class="card-title">Parent Stories</div>
+        <p class="card-desc">"Letters, not reviews." Featured-story navigator, honest trust strip, consent badges.</p>
+        <span class="card-meta">Open →</span>
+      </a>
+    </div>
+
+    <div class="footer">
+      <p><strong>To run the actual Next.js project:</strong></p>
+      <p style="margin-top: 8px;">
+        <code>cd naivedyam-website && npm install && npm run dev</code>
+      </p>
+      <p style="margin-top: 12px;">Then open <code>http://localhost:3000</code>.</p>
+      <p style="margin-top: 20px;">See <code>README.md</code> for the full guide.</p>
+    </div>
+  </div>
+</body>
+</html>

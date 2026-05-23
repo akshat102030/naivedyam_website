@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naivedyam — Conditions Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream-50: #FDFAF5; --cream: #FBF7F1; --cream-200: #F6EEE2; --cream-300: #EFE2CD;
+      --ink: #2A2438; --ink-700: #56486A; --ink-500: #857399; --ink-300: #B7ABC4;
+      --peach-100: #FDF1E8; --peach-200: #FADFC9; --peach-300: #F4C2A1; --coral: #E8927C; --coral-600: #D67560; --coral-700: #B85A47;
+      --sky-100: #EAF2FA; --sky-200: #D2E2F0; --sky-700: #4A7FAB;
+      --sage-100: #EEF5F0; --sage-200: #D9E8DE; --sage-700: #5F8E7A;
+      --lavender-100: #F3EFF7; --lavender-200: #E4DCEC; --lavender-700: #8470A4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--lavender-100) 50%, var(--sage-100) 100%);
+      color: var(--ink); min-height: 100vh; overflow-x: hidden; position: relative; -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+      opacity: 0.35; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    body.modal-open { overflow: hidden; }
+    h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: -0.025em; color: var(--ink); }
+    ::selection { background: var(--peach-300); color: var(--ink); }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px); position: relative; z-index: 2; }
+    .text-gradient { background: linear-gradient(110deg, #C97A4F 0%, var(--coral) 40%, #B19BC9 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .italic-soul { font-style: italic; letter-spacing: -0.01em; }
+    .glass-warm {
+      background: linear-gradient(135deg, rgba(253, 250, 245, 0.75), rgba(253, 241, 232, 0.55));
+      backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 20px 40px -16px rgba(232, 146, 124, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .bg-blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: 0.25; }
+    @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.08); opacity: 0.32; } }
+    .bg-1 { top: 30%; left: -160px; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(212, 197, 226, 0.5), transparent 70%); animation: breathe 12s ease-in-out infinite; }
+    .bg-2 { bottom: 20%; right: -160px; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(184, 216, 200, 0.55), transparent 70%); animation: breathe 12s ease-in-out infinite -5s; }
+
+    .section { padding: 120px 0 160px; position: relative; }
+    .section-head { max-width: 820px; margin: 0 auto; text-align: center; }
+    .eyebrow { display: inline-block; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--coral-700); font-weight: 500; margin-bottom: 16px; }
+    .section-title { font-family: 'Fraunces', serif; font-size: clamp(2.25rem, 5vw, 4.5rem); line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; }
+    .section-desc { margin-top: 20px; font-size: 19px; line-height: 1.65; color: var(--ink-700); text-wrap: pretty; }
+
+    /* Philosophy note */
+    .philosophy {
+      max-width: 640px; margin: 40px auto 0;
+      border-radius: 16px;
+      border: 1px solid rgba(246, 238, 226, 0.8);
+      background: rgba(253, 250, 245, 0.6);
+      backdrop-filter: blur(6px);
+      padding: 16px 24px;
+      text-align: center;
+    }
+    .philosophy p { font-size: 14px; line-height: 1.65; color: var(--ink-700); font-style: italic; text-wrap: pretty; }
+
+    /* Grid */
+    .grid { margin-top: 80px; display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 768px)  { .grid { grid-template-columns: 1fr 1fr; gap: 24px; } }
+    @media (min-width: 1024px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    /* Card */
+    .card {
+      position: relative; border-radius: 24px; padding: 28px;
+      border: 1px solid rgba(246, 238, 226, 0.8);
+      cursor: pointer; text-align: left;
+      display: flex; flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s;
+      opacity: 0; transform: translateY(24px);
+      font-family: inherit; color: inherit;
+      width: 100%;
+    }
+    .card.in { opacity: 1; transform: translateY(0); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s; }
+    .card[data-i="0"].in { transition-delay: 0s; }
+    .card[data-i="1"].in { transition-delay: 0.08s; }
+    .card[data-i="2"].in { transition-delay: 0.16s; }
+    .card[data-i="3"].in { transition-delay: 0.24s; }
+    .card[data-i="4"].in { transition-delay: 0.32s; }
+    .card[data-i="5"].in { transition-delay: 0.40s; }
+    .card:hover { transform: translateY(-4px); }
+    .card::after {
+      content: ''; position: absolute; inset: 0; opacity: 0.25; mix-blend-mode: multiply;
+      border-radius: 24px; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .card-inner { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
+
+    /* Tone variants */
+    .tone-lavender { background: linear-gradient(135deg, rgba(243, 239, 247, 0.7), var(--cream), rgba(228, 220, 236, 0.3)); --accent: var(--lavender-700); --glow: rgba(177, 155, 201, 0.22); --pill-bg: var(--lavender-100); }
+    .tone-coral    { background: linear-gradient(135deg, rgba(253, 241, 232, 0.7), var(--cream), rgba(232, 146, 124, 0.15)); --accent: var(--coral-700); --glow: rgba(232, 146, 124, 0.25); --pill-bg: var(--peach-100); }
+    .tone-sky      { background: linear-gradient(135deg, rgba(234, 242, 250, 0.7), var(--cream), rgba(210, 226, 240, 0.3)); --accent: var(--sky-700); --glow: rgba(122, 165, 204, 0.22); --pill-bg: var(--sky-100); }
+    .tone-peach    { background: linear-gradient(135deg, rgba(253, 241, 232, 0.7), var(--cream), rgba(250, 223, 201, 0.3)); --accent: var(--coral-700); --glow: rgba(232, 158, 114, 0.25); --pill-bg: var(--peach-100); }
+    .tone-sage     { background: linear-gradient(135deg, rgba(238, 245, 240, 0.7), var(--cream), rgba(217, 232, 222, 0.3)); --accent: var(--sage-700); --glow: rgba(142, 187, 165, 0.22); --pill-bg: var(--sage-100); }
+    .tone-cream    { background: linear-gradient(135deg, rgba(246, 238, 226, 0.8), var(--cream), rgba(253, 241, 232, 0.3)); --accent: var(--ink-700); --glow: rgba(232, 146, 124, 0.18); --pill-bg: var(--cream-200); }
+    .card:hover { box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 24px 48px -16px var(--glow); }
+
+    .icon-bg {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 56px; height: 56px; border-radius: 16px; margin-bottom: 20px;
+      background: var(--pill-bg); color: var(--accent);
+      box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 8px 24px -8px rgba(42, 36, 56, 0.08);
+      transition: transform 0.4s ease;
+    }
+    .card:hover .icon-bg { transform: scale(1.05); }
+    .icon-bg svg { width: 32px; height: 32px; }
+    .cond-name { font-family: 'Fraunces', serif; font-size: 24px; line-height: 1.1; color: var(--ink); text-wrap: balance; }
+    .cond-sub { margin-top: 8px; font-style: italic; font-size: 15px; color: var(--accent); letter-spacing: -0.01em; }
+    .cond-brief { margin-top: 16px; font-size: 15px; line-height: 1.6; color: var(--ink-700); text-wrap: pretty; }
+    .spacer { flex: 1; min-height: 16px; }
+    .cta-row { margin-top: 20px; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: var(--accent); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .card:hover .cta-row { transform: translateX(2px); }
+
+    /* Closing note */
+    .closing-note { margin-top: 80px; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0; transform: translateY(20px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+    .closing-note.in { opacity: 1; transform: translateY(0); }
+    .closing-note h4 { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(20px, 2.5vw, 26px); color: var(--ink); margin: 0; text-wrap: balance; }
+    .closing-note p { margin-top: 8px; color: var(--ink-700); line-height: 1.6; }
+
+    /* IV reveal */
+    .iv { opacity: 0; transform: translateY(20px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+    .iv.in { opacity: 1; transform: translateY(0); }
+
+    /* ===================== MODAL ===================== */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; align-items: flex-end; justify-content: center;
+      background: rgba(42, 36, 56, 0.4);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    @media (min-width: 768px) { .modal-overlay { align-items: center; } }
+    .modal-panel {
+      position: relative; width: 100%; max-height: 92vh; overflow: hidden;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 40px 80px -20px rgba(42, 36, 56, 0.4);
+      transform: translateY(40px) scale(0.96); opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s;
+    }
+    @media (min-width: 768px) { .modal-panel { max-width: 768px; max-height: 88vh; border-radius: 24px; margin: 0 24px; } }
+    .modal-overlay.open .modal-panel { transform: translateY(0) scale(1); opacity: 1; }
+    .modal-panel.tone-lavender { background: linear-gradient(135deg, rgba(243, 239, 247, 0.85), var(--cream-50)); }
+    .modal-panel.tone-coral    { background: linear-gradient(135deg, rgba(253, 241, 232, 0.85), var(--cream-50)); }
+    .modal-panel.tone-sky      { background: linear-gradient(135deg, rgba(234, 242, 250, 0.85), var(--cream-50)); }
+    .modal-panel.tone-peach    { background: linear-gradient(135deg, rgba(253, 241, 232, 0.85), var(--cream-50)); }
+    .modal-panel.tone-sage     { background: linear-gradient(135deg, rgba(238, 245, 240, 0.85), var(--cream-50)); }
+    .modal-panel.tone-cream    { background: linear-gradient(135deg, rgba(246, 238, 226, 0.85), var(--cream-50)); }
+    .modal-panel::after {
+      content: ''; position: absolute; inset: 0; opacity: 0.18; mix-blend-mode: multiply; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .modal-scroll { position: relative; max-height: 92vh; overflow-y: auto; }
+    @media (min-width: 768px) { .modal-scroll { max-height: 88vh; } }
+    .modal-handle { display: flex; justify-content: center; padding-top: 12px; }
+    @media (min-width: 768px) { .modal-handle { display: none; } }
+    .modal-handle-bar { width: 48px; height: 6px; border-radius: 999px; background: rgba(183, 171, 196, 0.4); }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px; z-index: 10;
+      width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(253, 250, 245, 0.75), rgba(253, 241, 232, 0.55));
+      backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.6);
+      color: var(--ink); cursor: pointer; transition: color 0.2s;
+      box-shadow: 0 8px 24px -8px rgba(42, 36, 56, 0.15);
+    }
+    .modal-close:hover { color: var(--coral-700); }
+    @media (min-width: 768px) { .modal-close { top: 24px; right: 24px; } }
+    .modal-body { padding: 32px 24px 40px; }
+    @media (min-width: 768px) { .modal-body { padding: 48px 48px; } }
+
+    .modal-header { display: flex; align-items: flex-start; gap: 20px; }
+    .modal-icon {
+      width: 64px; height: 64px; flex-shrink: 0;
+      border-radius: 16px;
+      display: grid; place-items: center;
+      background: var(--pill-bg); color: var(--accent);
+      box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 8px 24px -8px rgba(42, 36, 56, 0.08);
+    }
+    @media (min-width: 768px) { .modal-icon { width: 80px; height: 80px; border-radius: 20px; } }
+    .modal-icon svg { width: 40px; height: 40px; }
+    @media (min-width: 768px) { .modal-icon svg { width: 48px; height: 48px; } }
+    .modal-title { font-family: 'Fraunces', serif; font-size: clamp(28px, 3vw, 38px); line-height: 1.1; color: var(--ink); padding-right: 40px; text-wrap: balance; }
+    .modal-sub { margin-top: 8px; font-style: italic; font-size: 17px; color: var(--accent); letter-spacing: -0.01em; }
+    .modal-brief { margin-top: 32px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.65; color: var(--ink); text-wrap: pretty; }
+
+    .modal-section { margin-top: 40px; }
+    .modal-section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .modal-section-head svg { width: 20px; height: 20px; color: var(--accent); }
+    .modal-section-head h3 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--ink); }
+    .modal-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .modal-list li { display: flex; align-items: flex-start; gap: 12px; color: var(--ink); line-height: 1.6; }
+    .modal-list .bullet { margin-top: 8px; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; background: var(--accent); }
+    .modal-list.muted .bullet { background: var(--ink-500); }
+    .modal-prose { color: var(--ink); line-height: 1.65; text-wrap: pretty; }
+    .modal-hint { font-size: 14px; color: var(--ink-700); font-style: italic; margin-bottom: 16px; }
+
+    .therapy-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .therapy-pill {
+      display: inline-flex; align-items: center;
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      background: var(--pill-bg); color: var(--accent);
+      border: 1px solid rgba(246, 238, 226, 0.8);
+      cursor: pointer; transition: box-shadow 0.3s;
+      font-family: inherit;
+    }
+    .therapy-pill:hover { box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 8px 24px -8px rgba(42, 36, 56, 0.08); }
+
+    .clinical-note {
+      margin-top: 40px;
+      border-radius: 16px;
+      background: rgba(253, 250, 245, 0.7);
+      border: 1px solid rgba(246, 238, 226, 0.8);
+      padding: 16px 20px;
+      display: flex; gap: 12px;
+    }
+    .clinical-note svg { width: 16px; height: 16px; color: var(--ink-500); flex-shrink: 0; margin-top: 4px; }
+    .clinical-note p { font-size: 13px; line-height: 1.65; color: var(--ink-700); font-style: italic; text-wrap: pretty; }
+
+    .modal-cta { margin-top: 40px; display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+    @media (min-width: 640px) { .modal-cta { flex-direction: row; align-items: center; } }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 28px; font-family: inherit; font-size: 16px; font-weight: 500;
+      border-radius: 999px; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #EFA68F, var(--coral), var(--coral-600));
+      color: var(--cream-50);
+      box-shadow: 0 8px 32px -8px rgba(232, 146, 124, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: transform 0.3s, filter 0.3s, box-shadow 0.3s;
+    }
+    .btn-primary:hover { transform: translateY(-1px) scale(1.02); filter: brightness(1.05); box-shadow: 0 12px 40px -8px rgba(232, 146, 124, 0.55); }
+    .btn-ghost { padding: 12px 20px; font-family: inherit; font-size: 14px; color: var(--ink-700); background: none; border: none; cursor: pointer; transition: color 0.2s; }
+    .btn-ghost:hover { color: var(--coral-700); }
+
+    .preview-tag { position: fixed; bottom: 20px; right: 20px; z-index: 50; padding: 8px 14px; border-radius: 999px; font-size: 12px; letter-spacing: 0.05em; background: linear-gradient(135deg, rgba(253, 250, 245, 0.85), rgba(253, 241, 232, 0.7)); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.6); color: var(--ink-700); box-shadow: 0 8px 24px -8px rgba(42, 36, 56, 0.15); }
+  </style>
+</head>
+<body>
+
+  <!-- ============== SVG icon symbols ============== -->
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <defs>
+      <!-- AUTISM: infinity loop with 3 focused dots -->
+      <symbol id="icon-autism" viewBox="0 0 100 100">
+        <path d="M 25 50 C 25 35, 35 25, 45 35 C 50 41, 55 41, 60 35 C 70 25, 80 35, 80 50 C 80 65, 70 75, 60 65 C 55 59, 50 59, 45 65 C 35 75, 25 65, 25 50 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <circle cx="50" cy="50" r="3" fill="currentColor"/>
+        <circle cx="33" cy="50" r="2" fill="currentColor" opacity="0.7"/>
+        <circle cx="67" cy="50" r="2" fill="currentColor" opacity="0.7"/>
+      </symbol>
+
+      <!-- ADHD: radiating energy -->
+      <symbol id="icon-adhd" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="50" cy="50" r="6" fill="currentColor" fill-opacity="0.2"/>
+          <circle cx="50" cy="50" r="2.5" fill="currentColor" stroke="none"/>
+          <line x1="50" y1="20" x2="50" y2="28"/>
+          <line x1="50" y1="72" x2="50" y2="80"/>
+          <line x1="20" y1="50" x2="28" y2="50"/>
+          <line x1="72" y1="50" x2="80" y2="50"/>
+          <line x1="29" y1="29" x2="35" y2="35" opacity="0.85"/>
+          <line x1="71" y1="29" x2="65" y2="35" opacity="0.85"/>
+          <line x1="29" y1="71" x2="35" y2="65" opacity="0.85"/>
+          <line x1="71" y1="71" x2="65" y2="65" opacity="0.85"/>
+          <path d="M 15 35 Q 18 33, 20 36" opacity="0.55" fill="none"/>
+          <path d="M 80 35 Q 82 32, 85 35" opacity="0.55" fill="none"/>
+          <path d="M 15 65 Q 18 67, 20 64" opacity="0.55" fill="none"/>
+          <path d="M 80 65 Q 82 68, 85 65" opacity="0.55" fill="none"/>
+        </g>
+      </symbol>
+
+      <!-- CP: tree -->
+      <symbol id="icon-cp" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <ellipse cx="50" cy="32" rx="22" ry="16" fill="currentColor" fill-opacity="0.15"/>
+          <path d="M 50 82 L 50 50"/>
+          <path d="M 50 50 Q 38 40, 30 32"/>
+          <path d="M 50 50 Q 62 40, 70 32"/>
+          <path d="M 50 58 Q 38 56, 28 52" opacity="0.85"/>
+          <path d="M 50 58 Q 62 56, 72 52" opacity="0.85"/>
+          <circle cx="38" cy="28" r="2" fill="currentColor" opacity="0.5"/>
+          <circle cx="50" cy="22" r="2" fill="currentColor" opacity="0.7"/>
+          <circle cx="60" cy="30" r="2" fill="currentColor" opacity="0.5"/>
+          <line x1="30" y1="84" x2="70" y2="84" opacity="0.4"/>
+        </g>
+      </symbol>
+
+      <!-- Down Syndrome: heart embrace -->
+      <symbol id="icon-down" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+          <path d="M 50 30 Q 40 22, 32 26 Q 22 32, 30 44 Q 38 56, 50 64 Q 62 56, 70 44 Q 78 32, 68 26 Q 60 22, 50 30 Z" fill="currentColor" fill-opacity="0.18"/>
+          <path d="M 50 38 Q 44 33, 39 35 Q 33 38, 38 46 Q 43 53, 50 58 Q 57 53, 62 46 Q 67 38, 61 35 Q 56 33, 50 38 Z" fill="currentColor" fill-opacity="0.1"/>
+          <circle cx="50" cy="46" r="2.5" fill="currentColor" stroke="none"/>
+        </g>
+      </symbol>
+
+      <!-- LD: unusual key -->
+      <symbol id="icon-ld" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="50" cy="30" r="11"/>
+          <circle cx="50" cy="30" r="4" fill="currentColor" fill-opacity="0.3"/>
+          <line x1="50" y1="41" x2="50" y2="78"/>
+          <path d="M 50 58 L 56 58 L 56 63"/>
+          <path d="M 50 66 L 60 66 L 60 70"/>
+          <path d="M 50 72 L 55 72 L 55 76"/>
+        </g>
+      </symbol>
+
+      <!-- Dev delays: sprouting seed -->
+      <symbol id="icon-delay" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="20" y1="78" x2="80" y2="78" opacity="0.4"/>
+          <ellipse cx="50" cy="80" rx="6" ry="4" fill="currentColor" fill-opacity="0.3" stroke-width="1.5"/>
+          <path d="M 50 76 Q 50 60, 48 45 Q 50 32, 50 26" stroke-width="2"/>
+          <path d="M 48 45 Q 32 40, 30 52 Q 38 50, 48 48 Z" fill="currentColor" fill-opacity="0.18"/>
+          <path d="M 50 38 Q 68 33, 70 45 Q 60 44, 50 40 Z" fill="currentColor" fill-opacity="0.18"/>
+          <circle cx="50" cy="24" r="3" fill="currentColor" fill-opacity="0.4"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ============== SECTION ============== -->
+  <section class="section" id="conditions">
+    <div class="bg-blob bg-1"></div>
+    <div class="bg-blob bg-2"></div>
+
+    <div class="container">
+
+      <div class="section-head iv">
+        <span class="eyebrow">Who we work with</span>
+        <h2 class="section-title">Different ways of being, <span class="italic-soul text-gradient">fully welcomed</span></h2>
+        <p class="section-desc">Every child here is met with curiosity, not correction. These are the differences we know well — and the strengths we look for first.</p>
+      </div>
+
+      <div class="philosophy iv">
+        <p>We describe each condition starting with what we see in these children first — their strengths. Diagnosis matters for guiding therapy. It does not define your child.</p>
+      </div>
+
+      <!-- ============ GRID ============ -->
+      <div class="grid">
+        <!-- AUTISM -->
+        <button class="card tone-lavender" data-i="0" data-condition="autism">
+          <div class="card-inner">
+            <span class="icon-bg"><svg width="32" height="32"><use href="#icon-autism"/></svg></span>
+            <h3 class="cond-name">Autism Spectrum</h3>
+            <p class="cond-sub">A different way of meeting the world</p>
+            <p class="cond-brief">Children on the spectrum often experience the world more intensely — sounds, light, social signals — and many do their finest thinking when given space and structure.</p>
+            <div class="spacer"></div>
+            <div class="cta-row">See how we support
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- ADHD -->
+        <button class="card tone-coral" data-i="1" data-condition="adhd">
+          <div class="card-inner">
+            <span class="icon-bg"><svg width="32" height="32"><use href="#icon-adhd"/></svg></span>
+            <h3 class="cond-name">ADHD</h3>
+            <p class="cond-sub">Attention that moves differently</p>
+            <p class="cond-brief">Children with ADHD don't lack attention — they have a different relationship with it. When something captures them, their focus is fierce; the challenge is choosing what gets the spotlight.</p>
+            <div class="spacer"></div>
+            <div class="cta-row">See how we support
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- CEREBRAL PALSY -->
+        <button class="card tone-sky" data-i="2" data-condition="cp">
+          <div class="card-inner">
+            <span class="icon-bg"><svg width="32" height="32"><use href="#icon-cp"/></svg></span>
+            <h3 class="cond-name">Cerebral Palsy</h3>
+            <p class="cond-sub">Strength built one movement at a time</p>
+            <p class="cond-brief">Cerebral palsy affects how the brain communicates with muscles — but it doesn't define what a child can become. With consistent therapy, children build strength, coordination, and independence step by step.</p>
+            <div class="spacer"></div>
+            <div class="cta-row">See how we support
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- DOWN SYNDROME -->
+        <button class="card tone-peach" data-i="3" data-condition="down">
+          <div class="card-inner">
+            <span class="icon-bg"><svg width="32" height="32"><use href="#icon-down"/></svg></span>
+            <h3 class="cond-name">Down Syndrome</h3>
+            <p class="cond-sub">Their own pace, their own joy</p>
+            <p class="cond-brief">Children with Down syndrome learn, grow, and connect — they simply do it on their own timeline. With early support, they build full lives: school, friendships, work, independence.</p>
+            <div class="spacer"></div>
+            <div class="cta-row">See how we support
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- LEARNING DISABILITIES -->
+        <button class="card tone-sage" data-i="4" data-condition="ld">
+          <div class="card-inner">
+            <span class="icon-bg"><svg width="32" height="32"><use href="#icon-ld"/></svg></span>
+            <h3 class="cond-name">Learning Disabilities</h3>
+            <p class="cond-sub">Minds wired for a different path</p>
+            <p class="cond-brief">Dyslexia, dyscalculia, dysgraphia — these aren't reflections of intelligence. They're differences in how a child's brain processes letters, numbers, or written expression. With the right teaching, they thrive.</p>
+            <div class="spacer"></div>
+            <div class="cta-row">See how we support
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- DEV DELAYS -->
+        <button class="card tone-cream" data-i="5" data-condition="delay">
+          <div class="card-inner">
+            <span class="icon-bg"><svg width="32" height="32"><use href="#icon-delay"/></svg></span>
+            <h3 class="cond-name">Developmental Delays</h3>
+            <p class="cond-sub">Catching up, with the right support</p>
+            <p class="cond-brief">Sometimes a child is taking longer to reach milestones — walking, talking, playing — and we're not yet sure why. Early intervention, even before a specific diagnosis, helps the brain do what it does best: grow.</p>
+            <div class="spacer"></div>
+            <div class="cta-row">See how we support
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Don't see your child? -->
+      <div class="closing-note">
+        <h4>Don't see what you're looking for?</h4>
+        <p>We work with many other developmental differences, behavioural challenges, and unclear diagnoses. Reach out — we'll listen first, then tell you honestly whether we're the right fit.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============== MODAL ============== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
+    <div class="modal-panel" id="modalPanel">
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal-scroll">
+        <div class="modal-handle"><div class="modal-handle-bar"></div></div>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-tag">Live preview · Conditions · Naivedyam</div>
+
+  <script>
+    // ====== Condition data ======
+    const CONDITIONS = {
+      autism: {
+        tone: 'lavender', name: 'Autism Spectrum', sub: 'A different way of meeting the world',
+        icon: 'icon-autism',
+        brief: "Children on the spectrum often experience the world more intensely — sounds, light, social signals — and many do their finest thinking when given space and structure.",
+        strengths: ['Often: deeply focused, sometimes for hours, on what they love','Pattern-loving, memory-rich, sharp with detail','Honest. They mean what they say.','Loyal to the few they trust'],
+        lived: "Sounds can feel too loud. Eye contact takes work. Routines feel safer than surprises. Their bodies may have ways of self-soothing — rocking, hand-flapping, lining things up — that bring real comfort. Connection is wanted, but the bridge to it is built differently.",
+        therapies: ['ABA Therapy','Speech Therapy','Sensory Integration','Special Education'],
+        signs: ['Limited eye contact or response to their name by 12-18 months','Strong preference for sameness; distress when routines change','Repetitive movements or interests that feel intensely soothing',"Speech that arrives later, or doesn't arrive yet",'Difficulty in unstructured play with other children'],
+        clinical: 'Autism Spectrum Disorder (ASD) is a neurodevelopmental difference present from early childhood. Early structured support — typically Applied Behaviour Analysis, speech therapy, and sensory integration — significantly improves outcomes when paired with family involvement.',
+      },
+      adhd: {
+        tone: 'coral', name: 'ADHD', sub: 'Attention that moves differently',
+        icon: 'icon-adhd',
+        brief: "Children with ADHD don't lack attention — they have a different relationship with it. When something captures them, their focus is fierce; the challenge is choosing what gets the spotlight.",
+        strengths: ['High energy that fuels creativity when channelled','Intuitive, fast-thinking, often funny','Empathetic — they feel things deeply','Curious about everything; questions are constant'],
+        lived: "Sitting still feels like being underwater. Boring tasks can feel impossible; interesting ones consume them entirely. Thoughts move faster than words. Time feels strange — minutes can be hours, hours can be minutes. They aren't ignoring you; their brain is somewhere fascinating.",
+        therapies: ['Occupational Therapy','Sensory Integration','Special Education'],
+        signs: ['Persistent restlessness or difficulty sustaining quiet activities','Easily distracted; loses items often','Impulsivity in conversation, decisions, or movement','Forgetting daily routines despite intelligence and effort','Significant differences between strong-interest and low-interest tasks'],
+        clinical: 'Attention Deficit Hyperactivity Disorder (ADHD) is a neurodevelopmental difference involving attention regulation, impulse control, and executive function. Therapy supports skill-building and self-regulation; some families also work with paediatricians on medical support.',
+      },
+      cp: {
+        tone: 'sky', name: 'Cerebral Palsy', sub: 'Strength built one movement at a time',
+        icon: 'icon-cp',
+        brief: "Cerebral palsy affects how the brain communicates with muscles — but it doesn't define what a child can become. With consistent therapy, children build strength, coordination, and independence step by step.",
+        strengths: ['Determined. The work to do small things builds quiet resilience.','Often deeply observant — having watched the world from where they sit','Joyful in achievement; every milestone is earned','Adaptive thinkers — they find creative ways through challenges'],
+        lived: "Their muscles may not always do what they ask. Movement might be slower, less steady, or take more effort. Some days are stronger than others. The mind is sharp and present — the body is still learning to follow.",
+        therapies: ['Physiotherapy','Occupational Therapy','Speech Therapy'],
+        signs: ['Delayed motor milestones (sitting, crawling, walking)','Stiffness or floppiness in muscle tone','Asymmetrical movement — favouring one side','Difficulty with fine motor tasks (grasping, feeding)',"Speech that's harder to produce despite clear comprehension"],
+        clinical: 'Cerebral Palsy (CP) is a group of disorders affecting movement and posture, usually arising before or shortly after birth. Severity varies widely. Physiotherapy and occupational therapy are foundational; speech therapy supports children whose oral motor control is also affected.',
+      },
+      down: {
+        tone: 'peach', name: 'Down Syndrome', sub: 'Their own pace, their own joy',
+        icon: 'icon-down',
+        brief: "Children with Down syndrome learn, grow, and connect — they simply do it on their own timeline. With early support, they build full lives: school, friendships, work, independence.",
+        strengths: ['Warmth. A natural way of putting others at ease','Emotional intelligence — they read a room','Persistent. They keep practising until something clicks','Joyful presence; they remind a room what matters'],
+        lived: "Some skills take longer to arrive. Speech may be slower to develop. Muscles work a bit harder. But the curiosity is there. The will to connect is there. What's needed isn't to be hurried — it's to be met where they are, with the right support beside them.",
+        therapies: ['Speech Therapy','Occupational Therapy','Physiotherapy','Special Education'],
+        signs: ['Down syndrome is usually diagnosed at or shortly after birth','Early intervention from infancy makes the biggest difference','Speech and language often need ongoing support through childhood','Some children benefit from physiotherapy for low muscle tone','Most children attend mainstream school with appropriate accommodations'],
+        clinical: 'Down Syndrome is a genetic condition caused by an extra copy of chromosome 21. It affects physical development and cognitive learning pace. Outcomes improve substantially with early, family-centred intervention starting in infancy.',
+      },
+      ld: {
+        tone: 'sage', name: 'Learning Disabilities', sub: 'Minds wired for a different path',
+        icon: 'icon-ld',
+        brief: "Dyslexia, dyscalculia, dysgraphia — these aren't reflections of intelligence. They're differences in how a child's brain processes letters, numbers, or written expression. With the right teaching, they thrive.",
+        strengths: ['Often: rich verbal reasoning, creative thinkers, big-picture seers','Strong visual or spatial intelligence',"Resourceful. They've learned to work around obstacles","Empathetic — they know what it's like to struggle"],
+        lived: "Letters might flip. Numbers might dance. Writing the answer feels harder than knowing it. They might be the smartest voice in the conversation, then dread the homework that comes after. The frustration is real. So is what they can do when taught their way.",
+        therapies: ['Special Education','Occupational Therapy'],
+        signs: ['Reading slower or more effortful than peers despite practice','Persistent difficulty with spelling or letter reversals','Numbers and arithmetic feel disproportionately hard','Writing — physical or organisational — is a struggle','Bright in conversation, but academic performance lags'],
+        clinical: 'Specific Learning Disabilities (SLDs) include dyslexia (reading), dyscalculia (mathematics), and dysgraphia (writing). They are not related to intelligence. Targeted special education with multi-sensory teaching methods supports robust progress.',
+      },
+      delay: {
+        tone: 'cream', name: 'Developmental Delays', sub: 'Catching up, with the right support',
+        icon: 'icon-delay',
+        brief: "Sometimes a child is taking longer to reach milestones — walking, talking, playing — and we're not yet sure why. Early intervention, even before a specific diagnosis, helps the brain do what it does best: grow.",
+        strengths: ['Every child has their own arrival time — and their own gifts','Children in early therapy often catch up fully','Parents who notice early are giving their child a real advantage','The brain is at its most plastic in these years — change is possible'],
+        lived: "They may not be doing what other children their age are doing — not yet. Maybe they aren't walking. Maybe they aren't saying words. Maybe they don't play the way their cousin does. Often there's no clear reason. Sometimes a diagnosis comes later; sometimes it doesn't. What matters is helping the child today.",
+        therapies: ['Physiotherapy','Occupational Therapy','Speech Therapy','Sensory Integration'],
+        signs: ['Not meeting age-typical milestones (sitting, walking, first words)','Loss of skills previously gained (regression)','Limited response to people, or limited interest in surroundings','Persistent difficulty with feeding, sleeping, or self-soothing','Trust your instincts — parents are the first to notice when something is different'],
+        clinical: 'Developmental Delay describes a child whose progress is significantly behind expected milestones, in one or more domains, without (yet) a specific underlying diagnosis. Early intervention before age 5 has the largest impact; many children fully reach their peers with support.',
+      },
+    };
+
+    const overlay = document.getElementById('modalOverlay');
+    const panel = document.getElementById('modalPanel');
+    const body = document.getElementById('modalBody');
+    const closeBtn = document.getElementById('modalClose');
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function openModal(key) {
+      const c = CONDITIONS[key];
+      if (!c) return;
+      panel.className = 'modal-panel tone-' + c.tone;
+
+      const strengthsHtml = c.strengths.map(s => `<li><span class="bullet"></span><span>${escapeHtml(s)}</span></li>`).join('');
+      const signsHtml = c.signs.map(s => `<li><span class="bullet"></span><span>${escapeHtml(s)}</span></li>`).join('');
+      const pillsHtml = c.therapies.map(t => `<button class="therapy-pill">${escapeHtml(t)}</button>`).join('');
+
+      body.innerHTML = `
+        <div class="modal-header">
+          <div class="modal-icon">
+            <svg><use href="#${c.icon}"/></svg>
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <h2 class="modal-title">${escapeHtml(c.name)}</h2>
+            <p class="modal-sub">${escapeHtml(c.sub)}</p>
+          </div>
+        </div>
+
+        <p class="modal-brief">${escapeHtml(c.brief)}</p>
+
+        <section class="modal-section">
+          <div class="modal-section-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>
+            <h3>What we see in them</h3>
+          </div>
+          <ul class="modal-list">${strengthsHtml}</ul>
+        </section>
+
+        <section class="modal-section">
+          <div class="modal-section-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+            <h3>What they might be experiencing</h3>
+          </div>
+          <p class="modal-prose">${escapeHtml(c.lived)}</p>
+        </section>
+
+        <section class="modal-section">
+          <div class="modal-section-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            <h3>How we help</h3>
+          </div>
+          <p class="modal-prose" style="margin-bottom: 16px;">We typically support ${escapeHtml(c.name.toLowerCase())} with a combination of therapies, tailored to each child:</p>
+          <div class="therapy-pills">${pillsHtml}</div>
+        </section>
+
+        <section class="modal-section">
+          <div class="modal-section-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <h3>Signs a parent might notice</h3>
+          </div>
+          <p class="modal-hint">If you've been wondering — these are gentle markers parents often notice before seeking assessment. They're not a diagnosis; they're a starting point for a conversation.</p>
+          <ul class="modal-list muted">${signsHtml}</ul>
+        </section>
+
+        <div class="clinical-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <p>${escapeHtml(c.clinical)}</p>
+        </div>
+
+        <div class="modal-cta">
+          <button class="btn-primary">Book free assessment</button>
+          <button class="btn-ghost" onclick="closeModal()">Close</button>
+        </div>
+      `;
+
+      overlay.classList.add('open');
+      document.body.classList.add('modal-open');
+      closeBtn.focus();
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => openModal(card.dataset.condition));
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // In-view reveal
+    const ivObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ivObs.unobserve(e.target); } });
+    }, { rootMargin: '-50px 0px -50px 0px', threshold: 0.1 });
+    document.querySelectorAll('.iv, .card, .closing-note').forEach(el => ivObs.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naivedyam — Services Preview</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream-50: #FDFAF5;
+      --cream: #FBF7F1;
+      --cream-200: #F6EEE2;
+      --cream-300: #EFE2CD;
+      --ink: #2A2438;
+      --ink-700: #56486A;
+      --ink-300: #B7ABC4;
+      --peach-100: #FDF1E8;
+      --peach-200: #FADFC9;
+      --peach-300: #F4C2A1;
+      --peach-500: #E89E72;
+      --coral: #E8927C;
+      --coral-500: #E8927C;
+      --coral-600: #D67560;
+      --coral-700: #B85A47;
+      --sky-100: #EAF2FA;
+      --sky-200: #D2E2F0;
+      --sky-300: #A8C5E2;
+      --sky-700: #4A7FAB;
+      --sage-100: #EEF5F0;
+      --sage-200: #D9E8DE;
+      --sage-300: #B8D8C8;
+      --sage-700: #5F8E7A;
+      --lavender-100: #F3EFF7;
+      --lavender-200: #E4DCEC;
+      --lavender-300: #D4C5E2;
+      --lavender-500: #B19BC9;
+      --lavender-700: #8470A4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--cream) 0%, #F3EFF7 50%, var(--peach-100) 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    h1, h2, h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+    ::selection { background: var(--peach-300); color: var(--ink); }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px); position: relative; z-index: 2; }
+    .above { position: relative; z-index: 2; }
+    .text-gradient {
+      background: linear-gradient(110deg, #C97A4F 0%, var(--coral) 40%, var(--lavender-500) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .italic-soul { font-style: italic; letter-spacing: -0.01em; }
+
+    /* ========== Background atmosphere ========== */
+    .bg-blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; animation: breathe 12s ease-in-out infinite; }
+    @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.5; } }
+    .bg-sky { top: 0; right: 25%; width: 45vw; height: 45vw; background: radial-gradient(circle, rgba(168, 197, 226, 0.55), transparent 70%); }
+    .bg-peach { bottom: 25%; left: -160px; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(244, 194, 161, 0.55), transparent 70%); animation-delay: -5s; }
+
+    /* ========== Section heading ========== */
+    .section { padding: 120px 0 160px; position: relative; }
+    .section-head { max-width: 820px; margin: 0 auto; text-align: center; opacity: 0; transform: translateY(20px); animation: revealKf 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; }
+    .eyebrow { display: inline-block; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--coral-700); font-weight: 500; margin-bottom: 16px; }
+    .section-title { font-family: 'Fraunces', serif; font-size: clamp(2.25rem, 5vw, 4.5rem); line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; }
+    .section-desc { margin-top: 20px; font-size: 19px; line-height: 1.65; color: var(--ink-700); text-wrap: pretty; }
+    @keyframes revealKf { to { opacity: 1; transform: translateY(0); } }
+
+    /* ========== Bento grid ========== */
+    .services-grid {
+      margin-top: 80px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      grid-auto-flow: dense;
+    }
+    @media (min-width: 768px)  { .services-grid { grid-template-columns: 1fr 1fr; gap: 20px; } }
+    @media (min-width: 1024px) {
+      .services-grid { grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+      .featured-large { grid-column: span 2; grid-row: span 2; }
+      .featured-wide  { grid-column: span 3; }
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .featured-wide  { grid-column: span 2; }
+    }
+
+    /* ========== Service card ========== */
+    .card {
+      position: relative;
+      border-radius: 24px;
+      padding: 28px;
+      border: 1px solid rgba(246, 238, 226, 0.8);
+      cursor: default;
+      transform-style: preserve-3d;
+      transition: box-shadow 0.5s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      opacity: 0;
+      animation: revealCard 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes revealCard { to { opacity: 1; transform: translateY(0); } }
+    .card[data-i="0"] { animation-delay: 0s; }
+    .card[data-i="1"] { animation-delay: 0.08s; }
+    .card[data-i="2"] { animation-delay: 0.16s; }
+    .card[data-i="3"] { animation-delay: 0.24s; }
+    .card[data-i="4"] { animation-delay: 0.32s; }
+    .card[data-i="5"] { animation-delay: 0.4s; }
+
+    /* Top accent border */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 24px; right: 24px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent, var(--coral)) 50%, transparent);
+      opacity: 0.6;
+      z-index: 1;
+    }
+    /* Noise overlay */
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.3;
+      mix-blend-mode: multiply;
+      border-radius: 24px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .card-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transform: translateZ(20px);
+      z-index: 2;
+    }
+
+    /* Tone variants */
+    .tone-lavender { background: linear-gradient(135deg, rgba(243, 239, 247, 0.8), var(--cream), rgba(228, 220, 236, 0.4)); --accent: var(--lavender-500); }
+    .tone-coral    { background: linear-gradient(135deg, rgba(253, 241, 232, 0.8), var(--cream), rgba(232, 146, 124, 0.2)); --accent: var(--coral); }
+    .tone-sage     { background: linear-gradient(135deg, var(--sage-100), var(--cream), rgba(217, 232, 222, 0.4)); --accent: var(--sage-700); }
+    .tone-sky      { background: linear-gradient(135deg, var(--sky-100), var(--cream), rgba(210, 226, 240, 0.4)); --accent: var(--sky-700); }
+    .tone-peach    { background: linear-gradient(135deg, rgba(253, 241, 232, 0.8), var(--cream), rgba(250, 223, 201, 0.4)); --accent: var(--coral-700); }
+    .tone-cream    { background: linear-gradient(135deg, var(--cream-200), var(--cream), rgba(253, 241, 232, 0.4)); --accent: var(--coral-700); }
+
+    /* Icon container */
+    .icon-bg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 8px 24px -8px rgba(42, 36, 56, 0.08);
+      transition: transform 0.3s ease;
+    }
+    .featured-large .icon-bg { width: 80px; height: 80px; border-radius: 20px; }
+    .icon-bg svg { width: 32px; height: 32px; }
+    .featured-large .icon-bg svg { width: 48px; height: 48px; }
+
+    .tone-lavender .icon-bg { background: linear-gradient(135deg, var(--lavender-100), var(--lavender-200)); color: var(--lavender-700); }
+    .tone-coral    .icon-bg { background: linear-gradient(135deg, rgba(232, 146, 124, 0.3), rgba(232, 146, 124, 0.4)); color: var(--coral-700); }
+    .tone-sage     .icon-bg { background: linear-gradient(135deg, var(--sage-100), var(--sage-200)); color: var(--sage-700); }
+    .tone-sky      .icon-bg { background: linear-gradient(135deg, var(--sky-100), var(--sky-200)); color: var(--sky-700); }
+    .tone-peach    .icon-bg { background: linear-gradient(135deg, var(--peach-100), var(--peach-200)); color: var(--coral-700); }
+    .tone-cream    .icon-bg { background: linear-gradient(135deg, var(--cream-200), var(--cream-300)); color: var(--ink-700); }
+
+    .card-name { font-family: 'Fraunces', serif; font-size: 24px; line-height: 1.1; color: var(--ink); text-wrap: balance; }
+    .featured-large .card-name { font-size: clamp(28px, 3vw, 38px); }
+    .card-tagline { margin-top: 8px; font-style: italic; color: var(--ink-700); font-size: 16px; }
+    .featured-large .card-tagline { font-size: 18px; }
+    .card-desc { margin-top: 16px; color: var(--ink-700); line-height: 1.6; max-width: 420px; text-wrap: pretty; }
+
+    .pills { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink);
+      background: rgba(253, 250, 245, 0.7);
+      border: 1px solid rgba(246, 238, 226, 0.8);
+      backdrop-filter: blur(6px);
+    }
+
+    .learn-more {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card:hover .learn-more { opacity: 1; transform: translateX(0); }
+    .card:hover .icon-bg { transform: scale(1.05); }
+    .card:hover {
+      box-shadow: 0 30px 60px -20px var(--accent-glow, rgba(232, 146, 124, 0.25));
+    }
+    .tone-lavender:hover { --accent-glow: rgba(177, 155, 201, 0.28); }
+    .tone-coral:hover    { --accent-glow: rgba(232, 146, 124, 0.3); }
+    .tone-sage:hover     { --accent-glow: rgba(142, 187, 165, 0.28); }
+    .tone-sky:hover      { --accent-glow: rgba(122, 165, 204, 0.28); }
+    .tone-peach:hover    { --accent-glow: rgba(232, 158, 114, 0.3); }
+    .tone-cream:hover    { --accent-glow: rgba(232, 146, 124, 0.2); }
+
+    .flex-spacer { flex: 1; min-height: 8px; }
+
+    .preview-tag { position: fixed; bottom: 20px; right: 20px; z-index: 100; padding: 8px 14px; border-radius: 999px; font-size: 12px; letter-spacing: 0.05em; background: linear-gradient(135deg, rgba(253, 250, 245, 0.85), rgba(253, 241, 232, 0.7)); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.6); color: var(--ink-700); box-shadow: 0 8px 24px -8px rgba(42, 36, 56, 0.15); }
+  </style>
+</head>
+<body>
+
+  <section class="section">
+    <div class="bg-blob bg-sky"></div>
+    <div class="bg-blob bg-peach"></div>
+
+    <div class="container above">
+      <div class="section-head">
+        <span class="eyebrow">How we care</span>
+        <h2 class="section-title">Six paths to your child's <span class="italic-soul text-gradient">flourishing</span></h2>
+        <p class="section-desc">Each therapy is a different way of meeting your child where they are — and walking with them, at their pace, toward their own version of thriving.</p>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- ABA — large, 2x2 anchor -->
+        <div class="card tone-lavender featured-large" data-i="0">
+          <div class="card-inner">
+            <span class="icon-bg">
+              <!-- ABA icon: connected nodes -->
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <g stroke-width="1.5" stroke-linecap="round" opacity="0.55">
+                  <path d="M 30 30 Q 40 50, 50 50"/><path d="M 50 50 Q 60 50, 70 30"/>
+                  <path d="M 50 50 Q 60 60, 70 75"/><path d="M 50 50 Q 40 60, 30 75"/>
+                </g>
+                <circle cx="50" cy="50" r="6" fill="currentColor" fill-opacity="0.18" stroke-width="2"/>
+                <circle cx="30" cy="30" r="4" fill="currentColor" fill-opacity="0.4" stroke-width="1.5"/>
+                <circle cx="70" cy="30" r="4" fill="currentColor" fill-opacity="0.4" stroke-width="1.5"/>
+                <circle cx="70" cy="75" r="4" fill="currentColor" fill-opacity="0.4" stroke-width="1.5"/>
+                <circle cx="30" cy="75" r="4" fill="currentColor" fill-opacity="0.4" stroke-width="1.5"/>
+              </svg>
+            </span>
+            <h3 class="card-name">ABA Therapy</h3>
+            <p class="card-tagline">Behaviour, broken into kindness.</p>
+            <p class="card-desc">Applied Behaviour Analysis builds new skills through patient, evidence-based repetition — celebrating each small win until it becomes part of who your child is.</p>
+            <div class="pills">
+              <span class="pill">Autism</span><span class="pill">Behaviour shaping</span><span class="pill">Skill building</span><span class="pill">Communication</span>
+            </div>
+            <div class="flex-spacer"></div>
+            <span class="learn-more">Learn more
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- Speech -->
+        <div class="card tone-coral" data-i="1">
+          <div class="card-inner">
+            <span class="icon-bg">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <path d="M 25 35 Q 25 20, 40 20 L 60 20 Q 75 20, 75 35 L 75 50 Q 75 65, 60 65 L 50 65 L 40 75 L 40 65 Q 25 65, 25 50 Z" stroke-width="1.8" stroke-linejoin="round" fill="currentColor" fill-opacity="0.12"/>
+                <circle cx="42" cy="43" r="2" fill="currentColor"/><circle cx="50" cy="43" r="2" fill="currentColor"/><circle cx="58" cy="43" r="2" fill="currentColor"/>
+                <path d="M 80 30 Q 88 42, 80 55" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                <path d="M 86 25 Q 96 42, 86 60" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              </svg>
+            </span>
+            <h3 class="card-name">Speech Therapy</h3>
+            <p class="card-tagline">For the words still finding their way.</p>
+            <div class="pills"><span class="pill">Articulation</span><span class="pill">Language delay</span><span class="pill">Stammering</span></div>
+            <div class="flex-spacer"></div>
+            <span class="learn-more">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </div>
+
+        <!-- Sensory -->
+        <div class="card tone-sage" data-i="2">
+          <div class="card-inner">
+            <span class="icon-bg">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <circle cx="50" cy="50" r="3" fill="currentColor"/>
+                <circle cx="50" cy="50" r="14" stroke-width="1.8" opacity="0.6"/>
+                <circle cx="50" cy="50" r="24" stroke-width="1.5" opacity="0.4"/>
+                <circle cx="50" cy="50" r="34" stroke-width="1.2" opacity="0.25"/>
+              </svg>
+            </span>
+            <h3 class="card-name">Sensory Integration</h3>
+            <p class="card-tagline">Helping the world feel less loud.</p>
+            <div class="pills"><span class="pill">Self-regulation</span><span class="pill">Tactile defensiveness</span></div>
+            <div class="flex-spacer"></div>
+            <span class="learn-more">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </div>
+
+        <!-- Physio -->
+        <div class="card tone-sky" data-i="3">
+          <div class="card-inner">
+            <span class="icon-bg">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <path d="M 20 30 Q 50 15, 80 30" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 4" opacity="0.5"/>
+                <circle cx="50" cy="38" r="6" stroke-width="1.8" fill="currentColor" fill-opacity="0.15"/>
+                <line x1="50" y1="44" x2="50" y2="65" stroke-width="2" stroke-linecap="round"/>
+                <line x1="50" y1="50" x2="42" y2="58" stroke-width="2" stroke-linecap="round"/>
+                <line x1="50" y1="50" x2="59" y2="56" stroke-width="2" stroke-linecap="round"/>
+                <line x1="50" y1="65" x2="44" y2="80" stroke-width="2" stroke-linecap="round"/>
+                <line x1="50" y1="65" x2="56" y2="80" stroke-width="2" stroke-linecap="round"/>
+                <line x1="30" y1="82" x2="70" y2="82" stroke-width="1" opacity="0.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3 class="card-name">Physiotherapy</h3>
+            <p class="card-tagline">For every step worth celebrating.</p>
+            <div class="pills"><span class="pill">Cerebral palsy</span><span class="pill">Motor delays</span><span class="pill">Gait training</span></div>
+            <div class="flex-spacer"></div>
+            <span class="learn-more">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </div>
+
+        <!-- OT -->
+        <div class="card tone-peach" data-i="4">
+          <div class="card-inner">
+            <span class="icon-bg">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <rect x="44" y="20" width="12" height="12" rx="2" stroke-width="1.8" fill="currentColor" fill-opacity="0.18"/>
+                <path d="M 30 50 Q 30 42, 36 42 L 36 35 Q 36 30, 40 30 Q 44 30, 44 35 L 44 42 L 48 42 L 48 33 Q 48 28, 52 28 Q 56 28, 56 33 L 56 42 L 60 42 L 60 36 Q 60 31, 64 31 Q 68 31, 68 36 L 68 50 Q 68 70, 50 70 Q 32 70, 30 50 Z" stroke-width="1.8" stroke-linejoin="round" fill="currentColor" fill-opacity="0.1"/>
+                <path d="M 40 70 Q 40 78, 50 80 Q 60 78, 60 70" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+              </svg>
+            </span>
+            <h3 class="card-name">Occupational Therapy</h3>
+            <p class="card-tagline">Daily life as a quiet superpower.</p>
+            <div class="pills"><span class="pill">Fine motor</span><span class="pill">Daily living</span><span class="pill">Handwriting</span></div>
+            <div class="flex-spacer"></div>
+            <span class="learn-more">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </div>
+
+        <!-- Special Ed — wide -->
+        <div class="card tone-cream featured-wide" data-i="5">
+          <div class="card-inner">
+            <span class="icon-bg">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <circle cx="50" cy="40" r="10" fill="currentColor" fill-opacity="0.18"/>
+                <g stroke-width="1.5" stroke-linecap="round" opacity="0.6">
+                  <line x1="50" y1="22" x2="50" y2="26"/><line x1="35" y1="30" x2="38" y2="33"/><line x1="65" y1="30" x2="62" y2="33"/>
+                  <line x1="28" y1="42" x2="32" y2="42"/><line x1="68" y1="42" x2="72" y2="42"/>
+                </g>
+                <path d="M 20 60 L 50 56 L 50 78 L 22 80 Z" stroke-width="1.8" stroke-linejoin="round" fill="currentColor" fill-opacity="0.08"/>
+                <path d="M 80 60 L 50 56 L 50 78 L 78 80 Z" stroke-width="1.8" stroke-linejoin="round" fill="currentColor" fill-opacity="0.08"/>
+                <line x1="28" y1="65" x2="44" y2="63" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
+                <line x1="28" y1="70" x2="44" y2="68" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
+                <line x1="56" y1="63" x2="72" y2="65" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
+                <line x1="56" y1="68" x2="72" y2="70" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
+                <line x1="50" y1="56" x2="50" y2="78" stroke-width="1.5" opacity="0.7"/>
+              </svg>
+            </span>
+            <h3 class="card-name">Special Education</h3>
+            <p class="card-tagline">Learning, but paced for them.</p>
+            <p class="card-desc">A curriculum that adapts to your child — not the other way around. Reading, numeracy, social learning, designed for how they actually think.</p>
+            <div class="pills"><span class="pill">Learning disabilities</span><span class="pill">IEPs</span><span class="pill">Pre-academics</span><span class="pill">Reading</span></div>
+            <div class="flex-spacer"></div>
+            <span class="learn-more">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="preview-tag">Live preview · Services bento · Naivedyam</div>
+
+  <script>
+    // 3D tilt — capped at 6 degrees
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+        card.style.transform = `perspective(1200px) rotateY(${x * 6}deg) rotateX(${-y * 4}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1200px) rotateY(0deg) rotateX(0deg)';
+      });
+    });
+  </script>
+</body>
+</html>

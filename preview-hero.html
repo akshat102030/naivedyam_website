@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naivedyam — Live Preview</title>
+
+  <!-- Distinctive fonts: warm humanist serif + soft humanist sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,30..100;1,9..144,300..700,30..100&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #FBF7F1;
+      --cream-50: #FDFAF5;
+      --cream-200: #F6EEE2;
+      --ink: #2A2438;
+      --ink-700: #56486A;
+      --ink-500: #857399;
+      --peach: #F4C2A1;
+      --peach-100: #FDF1E8;
+      --sky: #A8C5E2;
+      --sage: #B8D8C8;
+      --lavender: #D4C5E2;
+      --coral: #E8927C;
+      --coral-700: #B85A47;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--peach-100) 40%, #F3EFF7 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle noise overlay — kills the flat AI look */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    ::selection { background: var(--peach); color: var(--ink); }
+
+    /* ===== Atmospheric blobs ===== */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: breathe 12s ease-in-out infinite;
+    }
+    .blob.peach { top: -200px; left: -150px; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(244,194,161,0.7), transparent 70%); opacity: 0.7; }
+    .blob.sky   { top: 20vh; right: -200px; width: 55vw; height: 55vw; background: radial-gradient(circle, rgba(168,197,226,0.65), transparent 70%); opacity: 0.55; animation-delay: -3s; }
+    .blob.lavender { bottom: -100px; left: 25vw; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(212,197,226,0.6), transparent 70%); opacity: 0.45; animation-delay: -6s; }
+    .blob.sage  { top: 50vh; left: 20vw; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(184,216,200,0.5), transparent 70%); opacity: 0.35; animation-delay: -9s; }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.08); opacity: 0.7; }
+    }
+
+    /* Constellation dots */
+    .dots {
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+      background-image: radial-gradient(circle, rgba(42, 36, 56, 0.5) 1px, transparent 1px);
+      background-size: 32px 32px;
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+
+    /* ===== Floating decorative shapes ===== */
+    .floater {
+      position: absolute;
+      animation: float 10s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(232, 146, 124, 0.25));
+      pointer-events: none;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(8px, -14px); }
+      66% { transform: translate(-7px, 6px); }
+    }
+
+    /* ===== Glassmorphism ===== */
+    .glass-warm {
+      background: linear-gradient(135deg, rgba(253, 250, 245, 0.75), rgba(253, 241, 232, 0.55));
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow:
+        0 1px 2px rgba(42, 36, 56, 0.04),
+        0 20px 40px -16px rgba(232, 146, 124, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    /* ===== Navbar ===== */
+    .nav-wrap {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      padding: 20px clamp(16px, 4vw, 40px);
+      transition: padding 0.5s;
+    }
+    .nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 28px;
+      border-radius: 999px;
+      transition: all 0.5s;
+    }
+    .nav.scrolled { background: linear-gradient(135deg, rgba(253,250,245,0.75), rgba(253,241,232,0.55)); backdrop-filter: blur(16px) saturate(140%); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 1px 2px rgba(42,36,56,0.04), 0 20px 40px -16px rgba(232,146,124,0.18), inset 0 1px 0 rgba(255,255,255,0.7); }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      display: grid;
+      place-items: center;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--peach), var(--coral));
+      color: var(--cream-50);
+      box-shadow: 0 8px 32px -8px rgba(232, 146, 124, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a {
+      padding: 8px 16px;
+      font-size: 14px;
+      color: var(--ink-700);
+      text-decoration: none;
+      border-radius: 999px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--coral-700); background: rgba(246, 238, 226, 0.6); }
+    @media (max-width: 900px) { .nav-links { display: none; } }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 32px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, filter 0.3s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-1px) scale(1.02); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: linear-gradient(135deg, #EFA68F, var(--coral), #D67560);
+      color: var(--cream-50);
+      box-shadow: 0 8px 32px -8px rgba(232, 146, 124, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    .btn-primary:hover { box-shadow: 0 12px 40px -8px rgba(232, 146, 124, 0.55); filter: brightness(1.05); }
+    .btn-secondary {
+      background: linear-gradient(135deg, rgba(253, 250, 245, 0.75), rgba(253, 241, 232, 0.55));
+      backdrop-filter: blur(16px);
+      color: var(--ink);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    .btn-sm { padding: 10px 20px; font-size: 14px; }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+    .hero-inner {
+      max-width: 980px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      color: var(--ink-700);
+      background: linear-gradient(135deg, rgba(253, 250, 245, 0.75), rgba(253, 241, 232, 0.55));
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 1px 2px rgba(42, 36, 56, 0.04), 0 20px 40px -16px rgba(232, 146, 124, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+    .pulse-dot {
+      position: relative;
+      display: inline-flex;
+      width: 8px; height: 8px;
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--coral);
+      opacity: 0.75;
+      animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    .pulse-dot::after {
+      content: '';
+      position: relative;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+    @keyframes ping {
+      75%, 100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    .headline {
+      margin-top: 28px;
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.75rem, 7vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      text-wrap: balance;
+      font-weight: 400;
+    }
+    .headline .accent {
+      font-style: italic;
+      background: linear-gradient(110deg, #C97A4F 0%, var(--coral) 40%, #B19BC9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding-right: 0.05em;
+    }
+
+    .subhead {
+      margin: 28px auto 0;
+      max-width: 640px;
+      font-size: 19px;
+      line-height: 1.65;
+      color: var(--ink-700);
+      text-wrap: pretty;
+    }
+
+    .ctas {
+      margin-top: 40px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .trust-strip {
+      margin-top: 64px;
+      display: inline-block;
+      padding: 20px 28px;
+      border-radius: 24px;
+    }
+    .trust-row {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      text-align: left;
+    }
+    .trust-stat .v {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .trust-stat .l {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--ink-700);
+    }
+    .trust-div {
+      width: 1px; height: 40px;
+      background: linear-gradient(180deg, transparent, rgba(133, 115, 153, 0.4), transparent);
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-500);
+      animation: fadeIn 1s 2s both;
+    }
+    .scroll-chevron { animation: bob 2s ease-in-out infinite; }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ===== Staggered reveal animation ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      animation: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .reveal.d1 { animation-delay: 0.2s; }
+    .reveal.d2 { animation-delay: 0.32s; }
+    .reveal.d3 { animation-delay: 0.44s; }
+    .reveal.d4 { animation-delay: 0.56s; }
+    .reveal.d5 { animation-delay: 0.68s; }
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating elements */
+    .float-1 { top: 18%; left: 8%; animation-duration: 8s; animation-delay: 0s; color: #E89E72; }
+    .float-2 { top: 28%; right: 10%; animation-duration: 10s; animation-delay: 1.2s; color: #7AA5CC; }
+    .float-3 { top: 60%; left: 6%; animation-duration: 9s; animation-delay: 0.6s; color: var(--coral); }
+    .float-4 { top: 72%; right: 14%; animation-duration: 11s; animation-delay: 2s; color: #B19BC9; }
+    .float-5 { top: 42%; right: 6%; animation-duration: 7s; animation-delay: 1.5s; color: #8EBBA5; }
+    .float-6 { top: 12%; right: 22%; animation-duration: 12s; animation-delay: 0.8s; color: #E89E72; }
+
+    /* Status banner for the preview */
+    .preview-tag {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, rgba(253, 250, 245, 0.85), rgba(253, 241, 232, 0.7));
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      color: var(--ink-700);
+      box-shadow: 0 8px 24px -8px rgba(42, 36, 56, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <!-- Atmospheric background -->
+  <div class="blob peach"></div>
+  <div class="blob sky"></div>
+  <div class="blob lavender"></div>
+  <div class="blob sage"></div>
+  <div class="dots"></div>
+
+  <!-- Navbar -->
+  <div class="nav-wrap">
+    <nav class="nav" id="nav">
+      <a class="nav-logo" href="#">
+        <span class="nav-logo-mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>
+        </span>
+        Naivedyam
+      </a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#conditions">Conditions</a>
+        <a href="#progress">Progress</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#testimonials">Testimonials</a>
+      </div>
+      <a href="#assessment" class="btn btn-primary btn-sm">Book Free Assessment</a>
+    </nav>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <!-- Floating decorative shapes -->
+    <svg class="floater float-1" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.8 5.8 21 7 14 2 9.3 9 8.5"/></svg>
+    <svg class="floater float-2" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"><path d="M12 3 9.5 8.5 4 11l5.5 2.5L12 19l2.5-5.5L20 11l-5.5-2.5Z"/></svg>
+    <svg class="floater float-3" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+    <svg class="floater float-4" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.8 5.8 21 7 14 2 9.3 9 8.5"/></svg>
+    <svg class="floater float-5" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"><path d="M12 3 9.5 8.5 4 11l5.5 2.5L12 19l2.5-5.5L20 11l-5.5-2.5Z"/></svg>
+    <svg class="floater float-6" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+
+    <div class="hero-inner">
+      <div class="reveal d1">
+        <span class="eyebrow">
+          <span class="pulse-dot"></span>
+          13+ Years caring for special children in Gwalior
+        </span>
+      </div>
+
+      <h1 class="headline reveal d2">
+        Every child deserves a<br />
+        <span class="accent">chance to shine</span>
+      </h1>
+
+      <p class="subhead reveal d3">
+        At Naivedyam, we walk beside parents through every step of their child&apos;s development —
+        with physiotherapy, speech therapy, occupational therapy, sensory integration, and
+        special education in a space built for healing.
+      </p>
+
+      <div class="ctas reveal d4">
+        <a href="#assessment" class="btn btn-primary">
+          Book Free Assessment
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#about" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Talk to a Therapist
+        </a>
+      </div>
+
+      <div class="trust-strip glass-warm reveal d5">
+        <div class="trust-row">
+          <div class="trust-stat"><div class="v">13+</div><div class="l">Years of care</div></div>
+          <div class="trust-div"></div>
+          <div class="trust-stat"><div class="v">200+</div><div class="l">Children guided</div></div>
+          <div class="trust-div"></div>
+          <div class="trust-stat"><div class="v">5</div><div class="l">Therapy disciplines</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <svg class="scroll-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </section>
+
+  <div class="preview-tag">
+    Live preview · Hero section · Naivedyam
+  </div>
+
+  <script>
+    // Navbar background on scroll
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (window.scrollY > 24) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>

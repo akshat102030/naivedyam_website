@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================================
+   NAIVEDYAM DESIGN TOKENS
+   Aesthetic: "Soft Cinematic Healing"
+   Inspired by: dawn light, watercolor children's books, warm Indian textiles
+   ========================================================================= */
+
+:root {
+  /* Brand colors as CSS vars for use outside Tailwind */
+  --color-cream: #FBF7F1;
+  --color-ink: #2A2438;
+  --color-peach: #F4C2A1;
+  --color-sky: #A8C5E2;
+  --color-sage: #B8D8C8;
+  --color-lavender: #D4C5E2;
+  --color-coral: #E8927C;
+
+  /* Spacing rhythm */
+  --section-padding-y: clamp(4rem, 10vh, 8rem);
+  --container-max: 1280px;
+
+  /* Easing curves - the soul of motion feel */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-breath: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Subtle site-wide center photo — keep opacity low for readability */
+  --bg-center-image: url('/images/center/center4.jpeg');
+  --bg-center-opacity: 0.1;
+}
+
+/* =========================================================================
+   BASE LAYER
+   ========================================================================= */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-cream-100 text-ink-900 font-sans;
+    background-image: var(--tw-gradient-stops, none);
+    /* Subtle warm noise texture on the entire page — kills the flat AI look */
+    position: relative;
+  }
+
+  /* Therapy hall photo — fixed, faint wash behind all sections */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: var(--bg-center-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: var(--bg-center-opacity);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.22 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+  }
+
+  /* Typography defaults — serif headings carry the emotion */
+  h1, h2, h3, h4, h5 {
+    @apply font-display text-ink-900;
+    font-feature-settings: 'ss01', 'ss02', 'liga';
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: var(--color-peach);
+    color: var(--color-ink);
+  }
+
+  /* Reduce focus ring harshness — keep a11y but make it warm */
+  :focus-visible {
+    outline: 2px solid var(--color-coral);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+}
+
+/* =========================================================================
+   CUSTOM COMPONENTS
+   ========================================================================= */
+
+@layer components {
+
+  /* The signature warm glass surface */
+  .glass-warm {
+    background: linear-gradient(
+      135deg,
+      rgba(253, 250, 245, 0.75) 0%,
+      rgba(253, 241, 232, 0.55) 100%
+    );
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 1px 2px rgba(42, 36, 56, 0.04),
+      0 20px 40px -16px rgba(232, 146, 124, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  /* Cooler glass variant for variety */
+  .glass-cool {
+    background: linear-gradient(
+      135deg,
+      rgba(234, 242, 250, 0.7) 0%,
+      rgba(243, 239, 247, 0.5) 100%
+    );
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 1px 2px rgba(42, 36, 56, 0.04),
+      0 20px 40px -16px rgba(122, 165, 204, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+
+  /* Aurora — the soft watercolor atmosphere behind hero sections */
+  .aurora-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .aurora-bg::before,
+  .aurora-bg::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    animation: breathe 12s ease-in-out infinite;
+  }
+
+  .aurora-bg::before {
+    width: 60vw;
+    height: 60vw;
+    top: -20vw;
+    left: -10vw;
+    background: radial-gradient(circle, var(--color-peach), transparent 70%);
+  }
+
+  .aurora-bg::after {
+    width: 50vw;
+    height: 50vw;
+    top: 10vh;
+    right: -15vw;
+    background: radial-gradient(circle, var(--color-sky), transparent 70%);
+    animation-delay: -4s;
+  }
+
+  /* Container helper */
+  .container-soft {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+}
+
+/* =========================================================================
+   UTILITIES
+   ========================================================================= */
+
+@layer utilities {
+
+  /* Make all content sit above the noise overlay */
+  .above-noise {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Text gradient — used sparingly on hero accent words */
+  .text-gradient-warm {
+    background: linear-gradient(110deg, #C97A4F 0%, #E8927C 40%, #B19BC9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Subtle paint stroke feel */
+    padding-right: 0.05em;
+  }
+
+  /* Italic display variant for soulful accent words */
+  .italic-soul {
+    font-style: italic;
+    font-feature-settings: 'ss01';
+    letter-spacing: -0.01em;
+  }
+}
+
+/* =========================================================================
+   SCROLLBAR
+   ========================================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-peach), var(--color-coral));
+  border-radius: 10px;
+  border: 2px solid var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--color-coral), #B85A47);
+}
+
+/* =========================================================================
+   REDUCED MOTION
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
