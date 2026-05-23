@@ -156,7 +156,7 @@ export function NonLinearTruth() {
 
         {/* Caption */}
         <p className="mt-4 text-sm text-center text-ink-500 italic">
-          A line that's been honest about its own journey.
+          A line that&apos;s been honest about its own journey.
         </p>
       </div>
     </div>
