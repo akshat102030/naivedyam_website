@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { NAV_LINKS, PRIMARY_CTA } from '@/data/navigation';
@@ -13,6 +14,12 @@ import { cn } from '@/lib/utils';
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const resolveHref = (href: string) => {
+    if (!href.startsWith('#')) return href;
+    return pathname === '/' ? href : `/${href}`;
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -66,7 +73,7 @@ export function Navbar() {
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
-                  href={link.href}
+                  href={resolveHref(link.href)}
                   className="px-4 py-2 text-sm text-ink-800 hover:text-coral-600 rounded-full hover:bg-cream-200/60 transition-colors"
                 >
                   {link.label}
@@ -76,7 +83,7 @@ export function Navbar() {
 
             {/* CTA + mobile toggle */}
             <div className="flex items-center gap-2">
-              <a href={PRIMARY_CTA.href} className="hidden sm:block">
+              <a href={resolveHref(PRIMARY_CTA.href)} className="hidden sm:block">
                 <Button size="sm">{PRIMARY_CTA.label}</Button>
               </a>
               <button
@@ -113,7 +120,7 @@ export function Navbar() {
               {NAV_LINKS.map((link) => (
                 <motion.a
                   key={link.href}
-                  href={link.href}
+                  href={resolveHref(link.href)}
                   onClick={() => setMenuOpen(false)}
                   variants={{
                     hidden: { opacity: 0, x: -16 },
@@ -131,7 +138,7 @@ export function Navbar() {
                 }}
                 className="mt-8"
               >
-                <a href={PRIMARY_CTA.href} onClick={() => setMenuOpen(false)}>
+                <a href={resolveHref(PRIMARY_CTA.href)} onClick={() => setMenuOpen(false)}>
                   <Button size="lg" className="w-full">{PRIMARY_CTA.label}</Button>
                 </a>
               </motion.div>

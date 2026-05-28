@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Navbar } from '@/components/navbar/Navbar';
 import { Hero } from '@/components/hero/Hero';
 import { FounderSection } from '@/components/founder/FounderSection';
@@ -6,10 +7,32 @@ import { ProgressSection } from '@/components/progress/ProgressSection';
 import { TestimonialsSection } from '@/components/testimonials/TestimonialsSection';
 import { ConditionsSection } from '@/components/conditions/ConditionsSection';
 import { GallerySection } from '@/components/gallery/GallerySection';
+import { getLocalBusinessSchema } from '@/data/localSeo';
+
+export const metadata: Metadata = {
+  title: 'Child Development Center in Gwalior | Speech & Occupational Therapy for Kids',
+  description:
+    'Naivedyam Child Development Center in Gwalior offers speech therapy for kids, occupational therapy for kids, special education, and child rehabilitation under one roof.',
+  alternates: {
+    canonical: 'https://naivedyamcdc.com',
+  },
+  openGraph: {
+    title: 'Child Development Center in Gwalior | Speech & Occupational Therapy for Kids',
+    description:
+      'Trusted child development and rehabilitation support in Gwalior: speech therapy, occupational therapy, special education, and early intervention.',
+    url: 'https://naivedyamcdc.com',
+  },
+};
 
 export default function Home() {
+  const localBusinessSchema = getLocalBusinessSchema();
+
   return (
     <main className="relative z-[1] overflow-x-clip">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
       <Navbar />
       <Hero />
       <FounderSection />

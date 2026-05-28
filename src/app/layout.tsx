@@ -21,20 +21,25 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://naivedyam.in'),
+  metadataBase: new URL('https://naivedyamcdc.com'),
   title: {
-    default: `${BRAND.name} — Child Development & Rehabilitation Center, Gwalior`,
+    default: 'Child Development Center in Gwalior | Speech & Occupational Therapy for Kids',
     template: `%s — ${BRAND.name}`,
   },
   description: BRAND.shortDescription,
+  alternates: {
+    canonical: 'https://naivedyamcdc.com',
+  },
   keywords: [
+    'Naivedyam Child Development Center',
     'Child Development Center Gwalior',
+    'Child Rehabilitation in Gwalior',
     'ABA Therapy Gwalior',
     'Autism Therapy Gwalior',
-    'Speech Therapy Gwalior',
-    'Occupational Therapy Gwalior',
+    'Speech Therapy for Kids in Gwalior',
+    'Occupational Therapy for Kids in Gwalior',
     'Physiotherapy children Gwalior',
-    'Special Education Gwalior',
+    'Special Education for Kids in Gwalior',
     'Cerebral Palsy therapy India',
     'Down Syndrome support',
     'Learning Disabilities help',
@@ -43,15 +48,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://naivedyam.in',
+    url: 'https://naivedyamcdc.com',
     siteName: BRAND.name,
     title: `${BRAND.name} — ${BRAND.tagline}`,
     description: BRAND.shortDescription,
+    images: [BRAND.logoSrc],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${BRAND.name} — ${BRAND.tagline}`,
     description: BRAND.shortDescription,
+    images: [BRAND.logoSrc],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ?? '',
+    },
   },
   robots: { index: true, follow: true },
   icons: {

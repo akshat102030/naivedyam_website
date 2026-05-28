@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ServicesGrid } from './ServicesGrid';
 
@@ -34,6 +35,24 @@ export function ServicesSection() {
 
         <div className="mt-16 md:mt-20">
           <ServicesGrid />
+        </div>
+
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          <Link href="/speech-therapy-gwalior" className="inline-flex items-center px-4 py-2 rounded-full text-sm text-ink-800 hover:text-coral-700 bg-cream-50/70 border border-cream-300/60 hover:bg-peach-100 transition-colors">
+            Speech Therapy for Kids in Gwalior
+          </Link>
+          <Link href="/occupational-therapy-gwalior" className="inline-flex items-center px-4 py-2 rounded-full text-sm text-ink-800 hover:text-coral-700 bg-cream-50/70 border border-cream-300/60 hover:bg-peach-100 transition-colors">
+            Occupational Therapy for Kids in Gwalior
+          </Link>
+          <Link href="/special-education-gwalior" className="inline-flex items-center px-4 py-2 rounded-full text-sm text-ink-800 hover:text-coral-700 bg-cream-50/70 border border-cream-300/60 hover:bg-peach-100 transition-colors">
+            Special Education for Kids in Gwalior
+          </Link>
+          <Link href="/child-rehabilitation-gwalior" className="inline-flex items-center px-4 py-2 rounded-full text-sm text-ink-800 hover:text-coral-700 bg-cream-50/70 border border-cream-300/60 hover:bg-peach-100 transition-colors">
+            Child Rehabilitation in Gwalior
+          </Link>
+          <Link href="/child-development-center-gwalior" className="inline-flex items-center px-4 py-2 rounded-full text-sm text-ink-800 hover:text-coral-700 bg-cream-50/70 border border-cream-300/60 hover:bg-peach-100 transition-colors">
+            Child Development Center in Gwalior
+          </Link>
         </div>
       </div>
     </section>

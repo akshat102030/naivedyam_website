@@ -6,11 +6,11 @@
 export const BRAND = {
   name: 'Naivedyam',
   logoSrc: '/logos/naiv_logo.png',
-  fullName: 'Naivedyam Child Development & Rehabilitation Center',
+  fullName: 'Naivedyam Child Development Center',
   tagline: 'Every Child Deserves a Chance to Shine',
   subtagline: '13+ Years of Specialised Child Rehabilitation & Development Care in Gwalior',
   shortDescription:
-    'A child development and rehabilitation center in Gwalior offering Physiotherapy, Occupational Therapy, Speech Therapy, Special Education, and Sensory Integration for children aged 0–15.',
+    'Naivedyam Child Development Center in Gwalior offering child rehabilitation, speech therapy for kids, occupational therapy for kids, special education, physiotherapy, and sensory integration for children aged 0-15.',
 } as const;
 
 export const CONTACT = {
