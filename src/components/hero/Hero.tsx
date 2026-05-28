@@ -54,6 +54,13 @@ export function Hero() {
             </span>
           </motion.div>
 
+          <motion.p
+            variants={item}
+            className="mt-5 text-xs md:text-sm uppercase tracking-[0.16em] text-ink-600 font-medium"
+          >
+            Naivedyam Child Development and Rehabilitation Center, City Centre, Gwalior
+          </motion.p>
+
           {/* Headline — the emotional core */}
           <motion.h1
             variants={item}

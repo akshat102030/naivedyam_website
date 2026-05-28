@@ -8,6 +8,7 @@ import { TestimonialsSection } from '@/components/testimonials/TestimonialsSecti
 import { ConditionsSection } from '@/components/conditions/ConditionsSection';
 import { GallerySection } from '@/components/gallery/GallerySection';
 import { getLocalBusinessSchema } from '@/data/localSeo';
+import { CONTACT } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Child Development Center in Gwalior | Speech & Occupational Therapy for Kids',
@@ -48,6 +49,7 @@ export default function Home() {
         ============================================================
       */}
       <PlaceholderSection id="assessment"   title="Book a Free Assessment"    next="Embedded Google Form" />
+      <SiteFooter />
     </main>
   );
 }
@@ -66,5 +68,20 @@ function PlaceholderSection({ id, title, next }: { id: string; title: string; ne
         <p className="mt-3 text-ink-700">{next}</p>
       </div>
     </section>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer className="relative border-t border-cream-300/60 py-12">
+      <div className="container-soft above-noise text-center">
+        <p className="text-sm md:text-base font-medium text-ink-900">
+          Naivedyam Child Development and Rehabilitation Center, City Centre, Gwalior
+        </p>
+        <p className="mt-2 text-sm text-ink-700">
+          {CONTACT.address.full}
+        </p>
+      </div>
+    </footer>
   );
 }
