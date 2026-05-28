@@ -8,7 +8,7 @@ import { TestimonialsSection } from '@/components/testimonials/TestimonialsSecti
 import { ConditionsSection } from '@/components/conditions/ConditionsSection';
 import { GallerySection } from '@/components/gallery/GallerySection';
 import { getLocalBusinessSchema } from '@/data/localSeo';
-import { CONTACT } from '@/lib/constants';
+import { BRAND, CONTACT, SOCIAL } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Child Development Center in Gwalior | Speech & Occupational Therapy for Kids',
@@ -74,12 +74,45 @@ function PlaceholderSection({ id, title, next }: { id: string; title: string; ne
 function SiteFooter() {
   return (
     <footer className="relative border-t border-cream-300/60 py-12">
-      <div className="container-soft above-noise text-center">
-        <p className="text-sm md:text-base font-medium text-ink-900">
-          Naivedyam Child Development and Rehabilitation Center, City Centre, Gwalior
-        </p>
-        <p className="mt-2 text-sm text-ink-700">
-          {CONTACT.address.full}
+      <div className="container-soft above-noise">
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          <div>
+            <p className="text-base md:text-lg font-medium text-ink-900">
+              {BRAND.fullName}
+            </p>
+            <p className="mt-2 text-sm text-ink-700">
+              {CONTACT.address.full}
+            </p>
+            <a href={`tel:${CONTACT.phone.replace(/\s+/g, '')}`} className="mt-3 inline-block text-sm text-coral-700 hover:text-coral-600 transition-colors">
+              Phone: {CONTACT.phone}
+            </a>
+          </div>
+
+          <div className="md:text-right">
+            <p className="text-sm font-medium text-ink-900">Follow us</p>
+            <div className="mt-3 flex md:justify-end gap-3">
+              <a
+                href={SOCIAL.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-3 py-1.5 rounded-full text-xs text-ink-800 border border-cream-300/70 bg-cream-50/70 hover:bg-peach-100 transition-colors"
+              >
+                Instagram
+              </a>
+              <a
+                href={SOCIAL.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-3 py-1.5 rounded-full text-xs text-ink-800 border border-cream-300/70 bg-cream-50/70 hover:bg-peach-100 transition-colors"
+              >
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <p className="mt-8 text-xs text-ink-500 text-center">
+          {new Date().getFullYear()} {BRAND.name}. All rights reserved.
         </p>
       </div>
     </footer>

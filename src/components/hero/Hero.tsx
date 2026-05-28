@@ -58,7 +58,7 @@ export function Hero() {
             variants={item}
             className="mt-5 text-xs md:text-sm uppercase tracking-[0.16em] text-ink-600 font-medium"
           >
-            Naivedyam Child Development and Rehabilitation Center, City Centre, Gwalior
+            Naivedyam Child Development Centre And Rehabilitation Center, City Center, Gwalior
           </motion.p>
 
           {/* Headline — the emotional core */}
